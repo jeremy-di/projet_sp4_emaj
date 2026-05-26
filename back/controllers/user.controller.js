@@ -89,6 +89,66 @@ const enable2FA = async (req, res) => {
         }
 }
 
+const generate2FA = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+
+        if (!user) {
+            return res.status(404).json({ msg : "Userr not found" })
+        }
+
+        const secret = authenticator.generateSecret()
+
+        const otpauth = authenticator.keyuri(
+            user.email,
+            "sp4_emaj",
+            secret
+        )
+
+        const qrcodeImage = await qrcode.toDataURL(otpauth)
+
+        user.twoFactorSecret = secret
+        await user.save()
+
+        return res.status(200).json({ msg: "QRCODE geneated", qrcodeImage })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ msg: "Server error", error: error })        
+    }
+}
+
+const enable2FA = async (req, res) => {
+    try {
+            const { token } = req.body
+            const user = await User.findById(req.user.id)
+
+            if (!user) {
+                return res.status(404).json({ msg : "Userr not found" })
+            }
+
+            if (!user.twoFactorSecret) {
+                return res.status(400).json({ message: "2FA secret not genrated" })
+            }
+
+            const isValid = authenticator.verify({
+                token,
+                secret: user.twoFactorSecret
+            })
+
+            if (!isValid) {
+                return res.status(400).json({ message: "Invalid 2FA code" })
+            }
+            
+            user.twoFactorEnabled = true
+            await user.save()
+
+            return res.status(200).json({ msg : "2FA enabled successfully" })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({ msg: "Server error", error: error })
+        }
+}
+
 const login = async(req, res) => {
     try {
         const {email, password } = req.body
