@@ -28,8 +28,20 @@ let getOneUser = (id) => {
     return Axios.get(`/users/${id}`)
 }
 
+let getMe = () => {
+    return Axios.get('/users/profil/me')
+}
+
 let updateUser = (id, payload) => {
     return Axios.put(`/users/${id}`, payload)
+}
+
+let updateMe = (credentials) => {
+    return Axios.patch('/users/updateme', credentials)
+}
+
+let updateMyPassword = (credentials) => {
+    return Axios.patch('/users/updatemypass', credentials)
 }
 
 let deleteUser = (id) => {
@@ -54,6 +66,6 @@ let isLogged = () => {
 }
 
 export const userService = {
-    login, verify2FA, generate2FA, enable2FA, register, getAllUsers, getOneUser, updateUser, deleteUser, saveToken, getToken, logout, isLogged
+    login, verify2FA, generate2FA, enable2FA, register, getAllUsers, getOneUser, getMe, updateUser, updateMe, updateMyPassword, deleteUser, saveToken, getToken, logout, isLogged
 }
 

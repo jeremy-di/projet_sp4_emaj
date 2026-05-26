@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { register, generate2FA, enable2FA, login, verify2FA, getAllUsers, getUserById, getMe, updateUser, deleteUser } from "../controllers/user.controller.js"
+import { register, generate2FA, enable2FA, login, verify2FA, getAllUsers, getUserById, getMe, updateUser, updateMe, updateMyPassword, deleteUser } from "../controllers/user.controller.js"
 import auth from '../middlewares/auth.js'
 import admin from '../middlewares/admin.js'
 
@@ -15,6 +15,8 @@ router.get('/all', auth, admin, getAllUsers)
 router.get('/:id', auth, admin, getUserById)
 router.get('/profil/me', auth, getMe)
 router.put('/:id', auth, admin, updateUser)
+router.patch('/updateme', auth, updateMe)
+router.patch('/updatemypass', auth, updateMyPassword)
 router.delete('/:id', auth, admin, deleteUser)
 
 export default router
