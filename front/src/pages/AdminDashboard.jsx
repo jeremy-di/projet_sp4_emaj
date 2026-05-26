@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import API from "../services/api"
+import { Link } from "react-router-dom"
 
 export default function AdminDashboard(){
 
@@ -36,10 +37,16 @@ export default function AdminDashboard(){
     }
 
     return(
-        <div className="p-8">
-            <h1 className="text-3xl font-bold mb-6">
-                Admin Dashboard
-            </h1>
+        <div className="py-8 px-16 grid grid-cols-1 gap-4">
+            <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+                <Link
+                    to="/admin/create-user"
+                    className="cursor-pointer border-2 px-4 py-3 rounded-lg hover:bg-black hover:text-white transition"
+                >
+                    Ajouter un compte
+                </Link>
+            </div>
             <table className="w-full border">
                 <thead>
                     <tr className="bg-gray-200">
