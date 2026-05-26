@@ -1,6 +1,7 @@
 import express from "express"
 import db from "./db/db.js"
 import cors from "cors"
+import userRoutes from "./routes/user.route.js"
 
 const app = express()
 
@@ -19,3 +20,5 @@ const port  = process.env.PORT
 app.listen(port, () => {
     console.log(`Le serveur écoute sur le port ${port}`)
 })
+
+app.use("/users", userRoutes)
