@@ -3,7 +3,6 @@ import User from "../models/user.model.js"
 import userValidation from "../validations/user.validation.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { authenticator } from "otplib"
 import qrcode from "qrcode"
 
 const register = async(req,res)=>{
