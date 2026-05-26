@@ -47,26 +47,26 @@ export default function AdminDashboard(){
                     Ajouter un compte
                 </Link>
             </div>
-            <table className="w-full border">
+            <table className="border-collapse border border-gray-400">
                 <thead>
                     <tr className="bg-gray-200">
-                        <th>Email</th>
-                        <th>Username</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th className="border border-gray-300">Email</th>
+                        <th className="border border-gray-300">Username</th>
+                        <th className="border border-gray-300">Status</th>
+                        <th className="border border-gray-300">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map(user => (
                         <tr key={user._id} className="border">
-                            <td>{user.email}</td>
-                            <td>{user.username}</td>
-                            <td>
+                            <td className="border border-gray-300">{user.email}</td>
+                            <td className="border border-gray-300">{user.username}</td>
+                            <td className="border border-gray-300">
                                 {user.isBlocked
                                     ? "Inactive"
                                     : "Active"}
                             </td>
-                            <td>
+                            <td className="border border-gray-300">
                                 <button
                                     onClick={() => toggleBlocked(user)}
                                     className="bg-blue-500 text-white px-4 py-2 rounded"
