@@ -10,6 +10,15 @@ const docSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User,
+        default: null
+    },
+    collaborators: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User
+    }],
     lastModifiedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: User,
