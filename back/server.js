@@ -2,6 +2,7 @@ import express from "express"
 import db from "./db/db.js"
 import cors from "cors"
 import userRoutes from "./routes/user.route.js"
+import docRoutes from "./routes/document.route.js"
 
 const app = express()
 
@@ -22,3 +23,4 @@ app.listen(port, () => {
 })
 
 app.use("/users", userRoutes)
+app.use("/documents", docRoutes)
