@@ -112,7 +112,7 @@ const login = async(req, res) => {
         }
 
         if (user.twoFactorEnabled) {
-            const tempToken = jwt.sign({ id: user._id, email:  user.email, twoFactorPending: true }, process.env.SECRET_KEY, { expiresIn: "5m" })
+            const tempToken = jwt.sign({ id: user._id, email:  user.email, role: user.role, twoFactorPending: true }, process.env.SECRET_KEY, { expiresIn: "5m" })
             
             return res.status(200).json({ msg: "2FA required", twoFactorRequired: true, tempToken })
         }
@@ -160,7 +160,7 @@ const verify2FA = async (req, res) => {
             return res.status(400).json({ msg: "Invalid 2FA code" })
         }
 
-        const finalToken = jwt.sign({ id: user._id, email:  user.email }, process.env.SECRET_KEY, { expiresIn: "12h" })
+        const finalToken = jwt.sign({ id: user._id, email:  user.email, role: user.role }, process.env.SECRET_KEY, { expiresIn: "12h" })
 
         return res.status(200).json({
             message: user.email+" is connected",
@@ -195,6 +195,17 @@ const getUserById = async(req,res) => {
     }
 }
 
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password")
+    if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" });
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
 const updateUser = async(req,res) => {
     try {
         const {body} = req
@@ -217,6 +228,75 @@ const updateUser = async(req,res) => {
     }
 }
 
+const updateMe = async (req, res) => {
+    try {
+        const { lastName, firstName, email } = req.body;
+
+        if (!lastName && !firstName && !email) {
+        return res.status(400).json({ message: "No data to update" });
+        }
+
+        const { error } = userValidation(req.body).userUpdateMe
+        if (error) {
+        return res.status(401).json(error.details[0].message);
+        }
+
+        const userId = req.user?.id || req.user?._id;
+
+        const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { lastName, firstName },
+        { new: true, runValidators: true, context: "query" }
+        ).select("-password");
+
+        if (!updatedUser) {
+        return res.status(404).json({ message: "User doesn't exist" });
+        }
+
+    return res.status(200).json(updatedUser);
+    }  catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Server error", error });
+  }
+}
+
+const updateMyPassword = async (req, res) => {
+    try {
+        const { oldPassword, newPassword, confirmPassword } = req.body;
+
+        if (!oldPassword || !newPassword || !confirmPassword) {
+        return res.status(400).json({ message: "All fields are required" });
+        }
+
+        if (newPassword !== confirmPassword) {
+        return res.status(400).json({ message: "Les mots de passe ne correspondent pas" });
+        }
+
+        const userId = req.user?.id
+        if (!userId) {
+        return res.status(400).json({ message: "Unauthorized" });
+        }
+
+        const user = await User.findById(userId).select("+password");
+        if (!user) {
+        return res.status(404).json({ message: "User not found" });
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+        return res.status(400).json({ message: "L'ancien mot de passe est incorrect" });
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        return res.status(200).json({ message: "Le mot de passe à bien été modifié" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Server error", error });
+    }
+}
+
 const deleteUser = async(req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id)
@@ -230,4 +310,4 @@ const deleteUser = async(req, res) => {
     }
 }
 
-export { register, generate2FA, enable2FA, login, verify2FA, getAllUsers, getUserById, updateUser, deleteUser }
+export { register, generate2FA, enable2FA, login, verify2FA, getAllUsers, getUserById, getMe, updateUser, updateMe, updateMyPassword, deleteUser }
