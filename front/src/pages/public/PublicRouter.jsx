@@ -5,6 +5,7 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import Activation from './Activation';
+import MyProfil from '../users/MyProfil';
 
 const PublicRouter = () => {
     return (
@@ -14,6 +15,7 @@ const PublicRouter = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/activation" element={<Activation />} />
+                <Route path="/myprofil" element={<MyProfil />} />
             </Route>
         </Routes>
     );

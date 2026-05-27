@@ -59,7 +59,7 @@ const Login = () => {
 
             userService.saveToken(response.data.token)
             setSuccess("Connexion réussie avec 2FA")
-            window.location = "/"
+            window.location = "/myprofil"
 
         } catch (err) {
             setError(err.response?.data?.message || err.response?.data?.msg || "Code 2FA invalide")
