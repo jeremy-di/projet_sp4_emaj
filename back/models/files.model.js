@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import User from './user.model.js'
 
 const filesSchema = new mongoose.Schema({
     name: {
@@ -8,7 +9,10 @@ const filesSchema = new mongoose.Schema({
     alt: {
       type: String,
     },
-
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User,
+    }
 }, { timestamps: true });
 
 export default mongoose.model('Files', filesSchema);

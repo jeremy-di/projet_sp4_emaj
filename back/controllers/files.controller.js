@@ -1,4 +1,3 @@
-
 import Files from "../models/files.model.js"
 import filesValidation from "../validations/files.validation.js"
 import fs from "node:fs"
@@ -18,6 +17,9 @@ const createFiles = async(req,res)=>{
         if(req.file){
             body.name = req.protocol+'://'+req.get("host")+'/uploads/'+req.file.filename
         }
+        
+        body.user = req.user._id
+        
         const {error} = filesValidation(body).filesCreate
         if(error){
             if(req.file){fs.unlinkSync("./uploads/"+req.file.filename)}
