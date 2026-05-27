@@ -5,6 +5,7 @@ import db from "./db/db.js"
 import cors from "cors"
 import userRoutes from "./routes/user.route.js"
 import docRoutes from "./routes/document.route.js"
+import filesRoutes from "./routes/files.route.js"
 import initSockets from "./sockets/index.js"
 
 const app = express()
@@ -39,3 +40,4 @@ server.listen(port, () => {
 })
 
 app.use("/documents", docRoutes)
+app.use("/files",filesRoutes)
