@@ -17,7 +17,8 @@ Axios.interceptors.request.use(request => {
 Axios.interceptors.response.use(response => {
     return response
 }, error => {
-    if(error.response && error.response.status === 403) {
+    const url = error.config?.url
+    if(error.response && error.response.status === 403 && !url.includes("/login")) {
         userService.logout()
         window.location = '/login'
     } else {

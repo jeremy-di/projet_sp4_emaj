@@ -14,7 +14,7 @@ const register = async(req,res)=>{
         }
         const {error} = userValidation(body).userCreate
         if(error){
-            return res.status(401).json(error.details[0].message)
+            return res.status(401).json({message: error.details[0].message})
         }
         const searchUser = await User.findOne({email: body.email})
         if(searchUser){
@@ -100,15 +100,15 @@ const login = async(req, res) => {
 
         const user = await User.findOne({ email: email})
         if(!user){
-            return res.status(400).json({message: "invalid credentials"})
+            return res.status(400).json({message: "Email ou mot de passe inccorect"})
         }
         const isMatch = await bcrypt.compare(password, user.password)
         if(!isMatch){
-            return res.status(400).json({message: "invalid invalides"})
+            return res.status(400).json({message: "Email ou mot de passe inccorect"})
         }
 
         if (user.isBlocked) {
-            return res.status(403).json({ msg: "Your account is blocked" })
+            return res.status(403).json({ msg: "Votre compte est bloqué" })
         }
 
         if (user.twoFactorEnabled) {
@@ -120,7 +120,7 @@ const login = async(req, res) => {
 
         res.status(200).json({
             message: user.email+" is connected",
-            token: jwt.sign({ id: user._id, email:  user.email }, process.env.SECRET_KEY, { expiresIn: "12h" })
+            token: jwt.sign({ id: user._id, email:  user.email, role: user.role }, process.env.SECRET_KEY, { expiresIn: "12h" })
         })
     } catch (error) {
         console.log(error)
