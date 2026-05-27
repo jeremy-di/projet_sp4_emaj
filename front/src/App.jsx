@@ -16,7 +16,7 @@ function App() {
           }
         />
         <Route path="/*" element={<PublicRouter />} />
-        <Route path="/users*" element={<UsersRouter />} />
+        <Route path="/users/*" element={<UsersRouter />} />
         <Route
           path="/admin/create-user"
           element={

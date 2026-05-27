@@ -83,20 +83,34 @@ const MyProfil = () => {
                                 </span>
                             </div>
                         </div>
+                        {!infos.twoFactorEnabled && (
+                        <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                            <p className="text-sm font-medium text-slate-500">
+                                Options
+                            </p>
+
+                            <a
+                            href="/activation"
+                            className="rounded-xl bg-green-600 px-5 py-4 text-center font-semibold text-white shadow-md transition hover:bg-blue-700 active:scale-[0.98]"
+                            >
+                                Activez l'authentification 2FA
+                            </a>
+                        </div>
+                        )}
 
                     </div>
 
                     <div className="mt-8 grid gap-4 sm:grid-cols-2">
 
                         <a
-                            href=""
+                            href="/users/updateprofil"
                             className="rounded-xl bg-blue-600 px-5 py-4 text-center font-semibold text-white shadow-md transition hover:bg-blue-700 active:scale-[0.98]"
                         >
                             Modifier mes informations
                         </a>
 
                         <a
-                            href=""
+                            href="/users/updatepassword"
                             className="rounded-xl bg-slate-800 px-5 py-4 text-center font-semibold text-white shadow-md transition hover:bg-slate-900 active:scale-[0.98]"
                         >
                             Modifier mon mot de passe

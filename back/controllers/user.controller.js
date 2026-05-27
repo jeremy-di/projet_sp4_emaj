@@ -230,9 +230,9 @@ const updateUser = async(req,res) => {
 
 const updateMe = async (req, res) => {
     try {
-        const { lastName, firstName, email } = req.body;
+        const { username, email } = req.body;
 
-        if (!lastName && !firstName && !email) {
+        if (!username && !email) {
         return res.status(400).json({ message: "No data to update" });
         }
 
@@ -245,7 +245,7 @@ const updateMe = async (req, res) => {
 
         const updatedUser = await User.findByIdAndUpdate(
         userId,
-        { lastName, firstName },
+        { username, email },
         { new: true, runValidators: true, context: "query" }
         ).select("-password");
 

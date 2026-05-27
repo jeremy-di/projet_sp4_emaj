@@ -1,5 +1,5 @@
 import axios from "axios";
-import { userService } from '../_services/user.service';
+import { userService } from './user.service';
 
 const Axios = axios.create({
     baseURL : "http://localhost:3000"

@@ -17,6 +17,11 @@ export default function userValidation(body){
       twoFactorEnabled: joi.boolean()
     })
 
+    const userUpdateMe = joi.object({
+      username: joi.string(),
+      email: joi.string(),
+    })
+
     const userLogin = joi.object({
       email: joi.string().email(),
       password: joi.string(),
@@ -25,6 +30,7 @@ export default function userValidation(body){
     return {
         userCreate: userCreate.validate(body),
         userUpdate: userUpdate.validate(body),
+        userUpdateMe: userUpdateMe.validate(body),
         userLogin: userLogin.validate(body),
     }
 }

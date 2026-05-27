@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { userService } from "../../_services/user.service"
+import { useNavigate } from "react-router-dom"
 
 const Activation = () => {
     const [qrCode, setQrCode] = useState("")
@@ -95,6 +96,13 @@ const Activation = () => {
                             Confirmer l’activation
                         </button>
                     </form>
+                    <div className="mt-5">
+                        <a href="/users/myprofil"
+                            className="block text-center w-full rounded-xl bg-blue-600 px-4 py-3 font-semibold mt-5 text-white shadow-md transition hover:bg-emerald-700 active:scale-[0.98]"
+                        >
+                            Revenir au profil
+                        </a>
+                    </div>
                 </section>
             )}
 
