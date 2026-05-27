@@ -4,17 +4,22 @@ import CreateUser from "./pages/CreateUser"
 import './App.css'
 import PublicRouter from "./pages/public/PublicRouter"
 import UsersRouter from "./pages/users/UsersRouter"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/admin"
-          element={
-              <AdminDashboard />
-          }
-        />
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/create-user" element={
+          <ProtectedRoute>
+            <CreateUser />
+          </ProtectedRoute>
+        } />
         <Route path="/*" element={<PublicRouter />} />
         <Route path="/users/*" element={<UsersRouter />} />
         <Route
