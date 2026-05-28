@@ -29,8 +29,6 @@ function App() {
         <Route path="/*" element={<PublicRouter />} />
         <Route path="/users/*" element={<UsersRouter />} />
         <Route path="/files/*" element={<FilesRouter />} />
-
-        {/* Route de test WebRTC */}
         <Route path="/call" element={
           <ProtectedRoute>
             <div>
