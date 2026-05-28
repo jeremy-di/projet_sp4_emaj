@@ -58,7 +58,7 @@ const ViewContent = () => {
                 <div>
                     <iframe
                         src={file.name}
-                        className="w-full h-[800px] rounded-xl border"
+                        className="w-full h-[650px] rounded-xl border"
                         title="PDF"
         />
                 </div>

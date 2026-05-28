@@ -31,7 +31,7 @@ const MyProfil = () => {
     else if (err) {
         return(
             <div className='flex justify-center mt-5'>
-                <h2 className='text-4xl text-red-500'>Erreur : {err}</h2>
+                <h2 className='text-4xl text-red-500'> Erreur : {err.response?.data?.message || err.message || "Une erreur est survenue"}</h2>
             </div>
         )
     }
