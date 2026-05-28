@@ -6,11 +6,6 @@ import PublicRouter from "./pages/public/PublicRouter"
 import UsersRouter from "./pages/users/UsersRouter"
 import ProtectedRoute from "./components/ProtectedRoute"
 import FilesRouter from "./pages/files/FilesRouter"
-import VideoCall from './components/VideoCall'
-
-const params = new URLSearchParams(window.location.search);
-const roomId = params.get('room') || 'room-test';
-const isCaller = params.has('caller');
 
 function App() {
   return (
@@ -29,16 +24,12 @@ function App() {
         <Route path="/*" element={<PublicRouter />} />
         <Route path="/users/*" element={<UsersRouter />} />
         <Route path="/files/*" element={<FilesRouter />} />
-
-        {/* Route de test WebRTC */}
-        <Route path="/call" element={
-          <ProtectedRoute>
-            <div>
-              <p>Room : <strong>{roomId}</strong> — Rôle : <strong>{isCaller ? 'Appelant' : 'Appelé'}</strong></p>
-              <VideoCall roomId={roomId} isCaller={isCaller} />
-            </div>
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/admin/create-user"
+          element={
+              <CreateUser />
+          }
+        />
       </Routes>
     </BrowserRouter>
   )
