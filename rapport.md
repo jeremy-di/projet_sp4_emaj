@@ -1,13 +1,29 @@
-## Choix de l'architecture et de la stack 
+## Choix de l'architecture et de la stack
 
+Nous avons fait le choix d'une application séparée : 
+
+- React pour le frontend
+- Node.js pour le backend
+
+Nous avons choisi React pour son architecture asynchrone qui nous permet  de créer des interfaces dynamiques, ce choix nous à paru cohérent pour une plateforme collaborative.
+En effet notre plateforme demande de nombreuses mises à jour de l'inyterface en temps réel.
+
+Le serveur backend repose sur Express qui permet d'avoir une API REST simple à maintenir, modulaire et facilement extensible.
+
+Le choix de la base de données s'est porté sur MongoDB qui nous permet un structure flexible adaptée à nos documents collaboratifs. De plus son fonctionnement orienté document nous permet de faire évoluer le projet le cas échéant.
+
+Nous avons également choisi Socket.IO qui nous à permis de gérer les échanges en temps réel importants pour la collaboration sur les documents et le chat.
+
+---
 ## Gestion utilisateur
 
 #### Mise en place
 
-Nous avons créer une gestion complète des utilisateurs comportant : 
+Nous avons créé une gestion complète des utilisateurs comportant :
 
 - Une fonctionnalité de connexion
 - Un CRUD
+- Une gestion des rôles
 
 Nous avons également mis en place un système d'authentification à multiple facteurs.
 
@@ -15,9 +31,9 @@ Un utilisateur connecté peut avoir accès à son profil affichant des informati
 
 #### Sécurité
 
-Nous avons choisi de sécuriser l'accès à notre site par le biais d'un mot de passe respectant les standards de NIST et OWASP en vigueur en 2026.
+Nous avons choisi Bcrypt qui nous permet de ne pas persisté un mot de passe en clair. Nous avons aussi choisi de sécuriser l'accès à notre site par le biais d'un mot de passe respectant les standards de NIST et OWASP en vigueur en 2026.
 
-Cette sécurité se trouve dans la validation des champs de formulaire gérée par la dépendance "JOI" qui permet de mettre en place des règles de validation puissantes.
+Cette sécurité se trouve dans la validation des champs de formulaire gérée par la dépendance "JOI" qui permet de mettre en place des règles de validation puissantes pour chaque champ de formulaire.
 
 ```bash
 /back/validations/user.validation.js
