@@ -51,6 +51,7 @@ export const useDocumentEditor = (documentId) => {
                     return
                 }
                 setParticipants(res.participants || [])
+                setMessages(res.messages || [])
             })
         }
         const onDisconnect = () => setConnected(false)
