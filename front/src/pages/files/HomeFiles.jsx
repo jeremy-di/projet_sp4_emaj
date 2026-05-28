@@ -37,6 +37,20 @@ const HomeFiles = () => {
         clearTimeout(timeoutRef.current)
     }
 
+    const getFileType = (url) => {
+        const extension = url.split(".").pop().toLowerCase()
+
+        if (["pdf"].includes(extension)) {
+            return "pdf"
+        }
+
+        if (["jpg", "jpeg", "png", "gif"].includes(extension)) {
+            return "image"
+        }
+
+        return "unknown"
+    }
+
     if (!loaded) {
         return(
             <div className='flex justify-center mt-5'>
@@ -61,7 +75,7 @@ const HomeFiles = () => {
                                 Gestion des imports de fichiers
                             </h1>
                             <p className="mt-2 text-sm text-slate-500">
-                                Consultez, importez ou supprimez vos documents
+                                Consultez, importez ou supprimez vos documents image ou PDF
                             </p>
                         </div>
     
@@ -83,6 +97,9 @@ const HomeFiles = () => {
                                     <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
                                         Importateur
                                     </th>
+                                    <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
+                                        Type
+                                    </th>
                                     <th className="px-6 py-4 text-right text-sm font-semibold text-slate-600">
                                         Actions <span className='text-xs text-amber-600'>( Appuie long pour supprimer )</span>
                                     </th>
@@ -90,6 +107,11 @@ const HomeFiles = () => {
                             </thead>
     
                             <tbody>
+                                {files.length === 0 &&(
+                                    <td className="px-6 py-4 font-medium text-slate-800">
+                                        Pas de fichiers
+                                    </td>
+                                )}
                                 {files.map(file => (
                                     <tr className="border-t border-slate-200 transition hover:bg-slate-50">
                                         <td className="px-6 py-4 font-medium text-slate-800">
@@ -97,6 +119,14 @@ const HomeFiles = () => {
                                         </td>
                                         <td className="px-6 py-4 font-medium text-slate-800">
                                             {file.user.username}
+                                        </td>
+                                        <td className="px-6 py-4 font-medium text-slate-800">
+                                            {getFileType(file.name) === "pdf" &&(
+                                                "PDF"
+                                            )}
+                                            {getFileType(file.name) === "image" &&(
+                                                "Image"
+                                            )}
                                         </td>
         
                                         <td className="px-6 py-4">

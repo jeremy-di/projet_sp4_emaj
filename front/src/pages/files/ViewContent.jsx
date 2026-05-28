@@ -22,6 +22,18 @@ const ViewContent = () => {
             })
     }, [])
 
+    const getFileType = (url) => {
+        const extension = url.split(".").pop().toLowerCase()
+
+        if (["pdf"].includes(extension)) {
+            return "pdf"
+        }
+
+        if (["jpg", "jpeg", "png", "gif"].includes(extension)) {
+            return "image"
+        }
+    }
+
     if (!loaded) {
         return(
             <div className='flex justify-center mt-5'>
@@ -37,8 +49,12 @@ const ViewContent = () => {
         ) 
     }
     else {
+
+        const filetype = getFileType(file.name)
+
         return (
             <>
+                {filetype === "pdf" && (
                 <div>
                     <iframe
                         src={file.name}
@@ -46,6 +62,16 @@ const ViewContent = () => {
                         title="PDF"
         />
                 </div>
+                )}
+                {filetype === "image" && (
+                    <div className='flex justify-center items-center border h-200'>
+                        <img
+                            src={file.name}
+                            alt="Fichier uploadé"
+                            className="max-h-[800px] rounded-xl border shadow-lg"
+                        />
+                    </div>
+                )}
                 <div className='mt-5 text-center'>
                     <a className='rounded-xl mt-5 bg-green-600 px-5 py-4 text-center font-semibold text-white shadow-md transition hover:bg-blue-700 active:scale-[0.98]' href="/files">Retour</a>
                 </div>
