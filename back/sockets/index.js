@@ -25,18 +25,36 @@ export default function initSockets(io) {
         });
 
         socket.on('offer', ({ roomId, offer }) => {
-            console.log('Offer reçue, on la transmet');
             socket.to(roomId).emit('offer', offer);
         });
 
         socket.on('answer', ({ roomId, answer }) => {
-            console.log('Answer reçue, on la transmet');
             socket.to(roomId).emit('answer', answer);
         });
         
         socket.on('ice-candidate', ({ roomId, candidate }) => {
             socket.to(roomId).emit('ice-candidate', candidate);
         });
+
+        socket.on('call:invite', ({ roomId, targetSocketId, callerName }) => {
+            io.to(targetSocketId).emit('call:incoming', {
+                roomId,
+                callerName,
+                callerSocketId: socket.id
+            })
+        })
+
+        socket.on('call:accepted', ({ callerSocketId, roomId }) => {
+            io.to(callerSocketId).emit('call:accepted', { roomId })
+        })
+
+        socket.on('call:rejected', ({ callerSocketId }) => {
+            io.to(callerSocketId).emit('call:rejected')
+        })
+
+        socket.on('call:ended', ({ roomId }) => {
+            socket.to(roomId).emit('call:ended')
+        })
 
         registerDocumentHandlers(io, socket)
 
