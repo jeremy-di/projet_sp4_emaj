@@ -9,6 +9,7 @@ export default function initSockets(io) {
         jwt.verify(token, process.env.SECRET_KEY, (err, payload) => {
             if (err) return next(new Error("Invalid token"))
             socket.user = payload
+            socket.data.user = payload
             next()
         })
     })

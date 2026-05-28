@@ -41,11 +41,21 @@ export default function registerDocumentHandlers(io, socket) {
         const allowed = await canAccess(documentId, userId)
         if (!allowed) return ack?.({ ok: false, error: "Forbidden" })
 
+        // Collect who is already in the room before joining.
+        const existing = await io.in(documentId).fetchSockets()
+        const participants = [...new Map(
+            existing.map(s => [s.data.user?.id, {
+                userId: s.data.user?.id,
+                username: s.data.user?.username || s.data.user?.email,
+                socketId: s.id
+            }])
+        ).values()]
+
         socket.join(documentId)
         socket.to(documentId).emit("document:user-joined", {
             userId, username, socketId: socket.id
         })
-        ack?.({ ok: true })
+        ack?.({ ok: true, participants })
     })
 
     socket.on("document:leave", ({ documentId }) => {

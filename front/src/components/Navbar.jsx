@@ -34,11 +34,6 @@ const Navbar = () => {
                                 Connexion
                             </Link>
                         </li>
-                        <li>
-                            <Link className="text-amber-600" to="/register">
-                                Inscription
-                            </Link>
-                        </li>
                     </>
                 )}
                 {token && (

@@ -10,6 +10,8 @@ const update = (id, payload) => Axios.put(`/documents/${id}`, payload)
 
 const remove = (id) => Axios.delete(`/documents/${id}`)
 
+const addCollaborator = (id, email) => Axios.post(`/documents/${id}/collaborators`, { email })
+
 export const documentService = {
-    getAll, getOne, create, update, remove,
+    getAll, getOne, create, update, remove, addCollaborator,
 }

@@ -1,3 +1,5 @@
+## Choix de l'architecture et de la stack 
+
 ## Gestion utilisateur
 
 #### Mise en place
