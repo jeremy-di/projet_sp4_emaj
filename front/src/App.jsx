@@ -6,6 +6,11 @@ import PublicRouter from "./pages/public/PublicRouter"
 import UsersRouter from "./pages/users/UsersRouter"
 import ProtectedRoute from "./components/ProtectedRoute"
 import FilesRouter from "./pages/files/FilesRouter"
+import VideoCall from './components/VideoCall'
+
+const params = new URLSearchParams(window.location.search);
+const roomId = params.get('room') || 'room-test';
+const isCaller = params.has('caller');
 
 function App() {
   return (
