@@ -39,5 +39,6 @@ server.listen(port, () => {
     console.log(`Le serveur écoute sur le port ${port}`)
 })
 
+app.use("/uploads", express.static("uploads"))
 app.use("/documents", docRoutes)
 app.use("/files",filesRoutes)

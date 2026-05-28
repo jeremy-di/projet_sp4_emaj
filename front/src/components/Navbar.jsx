@@ -48,6 +48,11 @@ const Navbar = () => {
                                 Mon profil
                             </Link>
                         </li>
+                        <li>
+                            <Link className="text-amber-600" to="/files">
+                                Documents importés
+                            </Link>
+                        </li>
                         {user?.role === "admin" && (
                             <li>
                                 <Link className="text-amber-600" to="/admin">

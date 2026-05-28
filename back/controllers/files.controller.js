@@ -18,7 +18,7 @@ const createFiles = async(req,res)=>{
             body.name = req.protocol+'://'+req.get("host")+'/uploads/'+req.file.filename
         }
         
-        body.user = req.user._id
+        body.user = req.user.id
         
         const {error} = filesValidation(body).filesCreate
         if(error){
@@ -37,7 +37,7 @@ const createFiles = async(req,res)=>{
 
 const getAllFiless = async(req, res) => {
     try {
-        const filess = await Files.find()
+        const filess = await Files.find().populate('user', 'username')
         return res.status(200).json(filess)
     } catch (error) {
         console.log(error)

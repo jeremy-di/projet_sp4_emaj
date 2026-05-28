@@ -5,6 +5,7 @@ import './App.css'
 import PublicRouter from "./pages/public/PublicRouter"
 import UsersRouter from "./pages/users/UsersRouter"
 import ProtectedRoute from "./components/ProtectedRoute"
+import FilesRouter from "./pages/files/FilesRouter"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         } />
         <Route path="/*" element={<PublicRouter />} />
         <Route path="/users/*" element={<UsersRouter />} />
+        <Route path="/files/*" element={<FilesRouter />} />
         <Route
           path="/admin/create-user"
           element={
