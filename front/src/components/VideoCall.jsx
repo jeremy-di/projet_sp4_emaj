@@ -26,8 +26,8 @@ export default function VideoCall({ roomId, isCaller }) {
       <audio ref={remoteAudioRef} autoPlay />
 
       {!inCall
-        ? <button onClick={startCall}>{isCaller ? '📞 Appeler' : '📞 Rejoindre'}</button>
-        : <button onClick={endCall}>🔴 Raccrocher</button>
+        ? <button onClick={startCall}>{isCaller ? 'Appeler' : 'Rejoindre'}</button>
+        : <button onClick={endCall}>Raccrocher</button>
       }
     </div>
   );
