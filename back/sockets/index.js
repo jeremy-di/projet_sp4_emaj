@@ -17,6 +17,27 @@ export default function initSockets(io) {
     io.on("connection", (socket) => {
         console.log(`Socket connecté : ${socket.id} (user: ${socket.user?.email || socket.user?.id})`)
 
+        socket.on('join', (roomId) => {
+            socket.join(roomId);
+            console.log(`${socket.id} a rejoint la room ${roomId}`);
+
+            socket.to(roomId).emit('peer-joined');
+        });
+
+        socket.on('offer', ({ roomId, offer }) => {
+            console.log('Offer reçue, on la transmet');
+            socket.to(roomId).emit('offer', offer);
+        });
+
+        socket.on('answer', ({ roomId, answer }) => {
+            console.log('Answer reçue, on la transmet');
+            socket.to(roomId).emit('answer', answer);
+        });
+        
+        socket.on('ice-candidate', ({ roomId, candidate }) => {
+            socket.to(roomId).emit('ice-candidate', candidate);
+        });
+
         registerDocumentHandlers(io, socket)
 
         socket.on("disconnect", (reason) => {
