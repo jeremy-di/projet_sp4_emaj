@@ -1,8 +1,11 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 import { useDocumentEditor } from "../../hooks/useDocumentEditor"
+import { useCall } from "../../useCall"
 import EditorHeader from "../../components/documents/EditorHeader"
 import ChatPanel from "../../components/documents/ChatPanel"
+import IncomingCallModal from '../../components/documents/IncomingCallModal'
+import { userService } from '../../_services/user.service';
 
 const DocumentEditor = () => {
     const { id: documentId } = useParams()
@@ -11,7 +14,27 @@ const DocumentEditor = () => {
         updateContent, sendChat, addCollaborator
     } = useDocumentEditor(documentId)
 
+    const {
+        callState, caller, remoteAudioRef,
+        startCall, acceptCall, rejectCall, endCall
+    } = useCall()
+
+    const [username, setUsername] = useState("")
+    const [error, setError] = useState(null)
+    const [loaded, setLoaded] = useState(false)
     const [chatOpen, setChatOpen] = useState(true)
+
+    useEffect(() => {
+        userService.getMe()
+            .then(res => {
+                setUsername(res.data.username || "Un participant")
+                setLoaded(true)
+            })
+            .catch(error => {
+                setError("Impossible de charger les informations")
+                setLoaded(true)
+            })
+    }, [])
 
     if (loading) {
         return (
@@ -36,14 +59,28 @@ const DocumentEditor = () => {
 
     return (
         <div className="flex h-[calc(100vh-64px)] bg-slate-100">
+            <audio ref={remoteAudioRef} autoPlay />
+
+            {callState === 'incoming' && (
+                <IncomingCallModal
+                    caller={caller}
+                    onAccept={acceptCall}
+                    onReject={rejectCall}
+                />
+            )}
+
             <main className="flex flex-1 flex-col">
                 <EditorHeader
                     title={doc?.title}
                     connected={connected}
                     participantCount={participants.length + 1}
+                    participants={participants}
                     chatOpen={chatOpen}
                     onToggleChat={() => setChatOpen(o => !o)}
                     onAddCollaborator={addCollaborator}
+                    callState={callState}
+                    onCall={(targetSocketId) => startCall(targetSocketId, username)}
+                    onEndCall={endCall}
                 />
 
                 <textarea

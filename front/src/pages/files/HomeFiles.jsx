@@ -108,9 +108,11 @@ const HomeFiles = () => {
     
                             <tbody>
                                 {files.length === 0 &&(
-                                    <td className="px-6 py-4 font-medium text-slate-800">
-                                        Pas de fichiers
-                                    </td>
+                                    <tr>
+                                        <td className="px-6 py-4 font-medium text-slate-800">
+                                            Pas de fichiers
+                                        </td>
+                                    </tr>
                                 )}
                                 {files.map(file => (
                                     <tr className="border-t border-slate-200 transition hover:bg-slate-50">
