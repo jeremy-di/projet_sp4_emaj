@@ -29,6 +29,16 @@ function App() {
         <Route path="/*" element={<PublicRouter />} />
         <Route path="/users/*" element={<UsersRouter />} />
         <Route path="/files/*" element={<FilesRouter />} />
+
+        {/* Route de test WebRTC */}
+        <Route path="/call" element={
+          <ProtectedRoute>
+            <div>
+              <p>Room : <strong>{roomId}</strong> — Rôle : <strong>{isCaller ? 'Appelant' : 'Appelé'}</strong></p>
+              <VideoCall roomId={roomId} isCaller={isCaller} />
+            </div>
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   )
