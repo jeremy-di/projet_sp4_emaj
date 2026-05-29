@@ -22,7 +22,7 @@ const Navbar = () => {
     return (
         <header className="py-4 border-b flex justify-center">
             <div>
-                <img className="w-50" src="/emaj_logo.png" alt="" />
+                <img className="w-20 p-2" src="/emaj_logo.png" alt="" />
             </div>
             <ul className="flex gap-5 justify-center items-center">
                 <li>

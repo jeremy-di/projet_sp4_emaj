@@ -15,7 +15,10 @@ const Home = () => {
                     Espace collaboratif
                 </h1>
                 <p className="mt-3 text-slate-500">
-                    Connectez-vous pour accéder à vos documents 
+                    <Link to="/login" className="font-semibold text-blue-600 hover:underline">
+                        Connectez-vous
+                    </Link>{" "}
+                    pour accéder à vos documents
                 </p>
 
             </section>
