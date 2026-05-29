@@ -20,7 +20,8 @@ export default function userValidation(body){
         "any.required" : "Le login est obligatoire"
       }),
       isBlocked: joi.boolean(),
-      twoFactorEnabled: joi.boolean()
+      twoFactorEnabled: joi.boolean(),
+      role: joi.string()
     })
 
     const userUpdate = joi.object({

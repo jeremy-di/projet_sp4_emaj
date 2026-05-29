@@ -57,6 +57,7 @@ export default function AdminDashboard(){
                                 <tr className="bg-gray-200">
                                     <th className="border border-gray-300 py-2">Email</th>
                                     <th className="border border-gray-300 py-2">Username</th>
+                                    <th className="border border-gray-300 py-2">Rôle</th>
                                     <th className="border border-gray-300 py-2">Status</th>
                                     <th className="border border-gray-300 py-2">Actions</th>
                                 </tr>
@@ -66,6 +67,14 @@ export default function AdminDashboard(){
                                     <tr key={user._id} className="border">
                                         <td className="border border-gray-300 p-2">{user.email}</td>
                                         <td className="border border-gray-300 p-2">{user.username}</td>
+                                        <td className="border border-gray-300 p-2">
+                                            {user.role === "user" && (
+                                                "Utilisateur"
+                                            )}
+                                            {user.role === "admin" && (
+                                                "Administrateur"
+                                            )}
+                                        </td>
                                         <td className="border border-gray-300 p-2">
                                             {user.isBlocked
                                                 ? "Désactiver"

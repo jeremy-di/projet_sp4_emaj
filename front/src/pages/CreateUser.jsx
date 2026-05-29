@@ -10,7 +10,8 @@ export default function CreateUser(){
     const [form, setForm] = useState({
         email: "",
         password: "",
-        username: ""
+        username: "",
+        role: "user"
     })
 
     const [error, setError] = useState("")
@@ -70,6 +71,25 @@ export default function CreateUser(){
                                 onChange={handleChange}
                                 className="border p-3 rounded-lg outline-none focus:border-black"
                             />
+                            <select
+                                name="role"
+                                value={form.role}
+                                onChange={handleChange}
+                                className="border p-3 rounded-lg outline-none focus:border-black bg-white"
+                                required
+                            >
+                                <option value="">
+                                    Choisir un rôle
+                                </option>
+
+                                <option value="user">
+                                    Utilisateur
+                                </option>
+
+                                <option value="admin">
+                                    Administrateur
+                                </option>
+                            </select>
                             <input
                                 type="password"
                                 name="password"
