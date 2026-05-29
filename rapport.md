@@ -40,3 +40,9 @@ Cette sécurité se trouve dans la validation des champs de formulaire gérée p
 ```
 
 Les utilisateurs de la plateforme ont la possibilité d'activer l'authentification à multiple facteurs afin d'avoir à rentré un code à 6 chiffres venant d'une application dédiée (Microsoft Authenticator ou Google authenticator) pour pouvoir finaliser sa connexion au site.
+
+#### WebRTC
+
+Nous avons utilisé WebRTC pour gérer les appels entre deux collaborateurs. Lorsque 2 personnes (au minimum) sont connectés sur un document en même temps, l'un peut envoyer un appel à un autre. La personne appelée pourra répondre à l'appel (ou refuser) et communiquer avec l'autre utilisateur. Les deux collaborateurs ont la possibilité de mettre fin à l'appel.
+
+On a choisi cet outil car il nous a été recommandé au début du projet et parce que c'est un outil JS opensource. Il est également supporté sur tous les navigateurs.
