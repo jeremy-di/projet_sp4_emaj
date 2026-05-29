@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useParams, Link } from "react-router-dom"
 import { useDocumentEditor } from "../../hooks/useDocumentEditor"
 import { useCall } from "../../useCall"
@@ -6,13 +6,18 @@ import EditorHeader from "../../components/documents/EditorHeader"
 import ChatPanel from "../../components/documents/ChatPanel"
 import IncomingCallModal from '../../components/documents/IncomingCallModal'
 import { userService } from '../../_services/user.service';
+import RemoteCursor from "../../components/documents/RemoteCursor"
+import getCaretCoordinates from "textarea-caret"
 
 const DocumentEditor = () => {
     const { id: documentId } = useParams()
     const {
-        doc, content, loading, err, connected, participants, messages,
-        updateContent, sendChat, addCollaborator
+        doc, content, loading, err, connected, participants, messages, cursors,
+        updateContent, sendChat, updateCursor, addCollaborator
     } = useDocumentEditor(documentId)
+
+    const textareaRef = useRef(null)
+    const [scrollPos, setScrollPos] = useState({ top: 0, left: 0 })
 
     const {
         callState, caller, remoteAudioRef,
@@ -35,6 +40,18 @@ const DocumentEditor = () => {
                 setLoaded(true)
             })
     }, [])
+
+    const handleSelectionChange = (e) => {
+        const position = e.target.selectionStart
+        updateCursor(position)
+    }
+
+    const handleScroll = (e) => {
+        setScrollPos({
+            top: e.target.scrollTop,
+            left: e.target.scrollLeft
+        })
+    }
 
     if (loading) {
         return (
@@ -83,11 +100,31 @@ const DocumentEditor = () => {
                     onEndCall={endCall}
                 />
 
-                <textarea
-                    value={content}
-                    onChange={e => updateContent(e.target.value)}
-                    className="flex-1 resize-none bg-white p-4"
-                />
+                <div className="flex-1 relative overflow-hidden bg-white">
+                    {Object.entries(cursors).map(([socketId, cursor]) => {
+                        if (!textareaRef.current) return null
+                        const caret = getCaretCoordinates(textareaRef.current, cursor.position)
+                        return (
+                            <RemoteCursor
+                                key={socketId}
+                                cursor={cursor}
+                                style={{
+                                    top: caret.top - scrollPos.top,
+                                    left: caret.left - scrollPos.left
+                                }}
+                            />
+                        )
+                    })}
+                    <textarea
+                        ref={textareaRef}
+                        value={content}
+                        onChange={e => updateContent(e.target.value)}
+                        onSelect={handleSelectionChange}
+                        onKeyUp={handleSelectionChange}
+                        onScroll={handleScroll}
+                        className="w-full h-full resize-none p-4 outline-none"
+                    />
+                </div>
             </main>
 
             {chatOpen && <ChatPanel messages={messages} onSend={sendChat} />}

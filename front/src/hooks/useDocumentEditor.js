@@ -14,6 +14,7 @@ export const useDocumentEditor = (documentId) => {
     const [connected, setConnected] = useState(false)
     const [participants, setParticipants] = useState([])
     const [messages, setMessages] = useState([])
+    const [cursors, setCursors] = useState({})
 
     useEffect(() => {
         let cancelled = false
@@ -65,10 +66,21 @@ export const useDocumentEditor = (documentId) => {
             setParticipants(p => p.some(x => x.userId === userId) ? p : [...p, { userId, username, socketId }])
             setMessages(m => [...m, { system: true, text: `${username || "Quelqu'un"} a rejoint`, at: Date.now() }])
         }
-        const onUserLeft = ({ userId }) => {
+        const onUserLeft = ({ userId, socketId }) => {
             setParticipants(p => p.filter(x => x.userId !== userId))
+            setCursors(prev => {
+                const next = { ...prev }
+                delete next[socketId]
+                return next
+            })
         }
         const onChat = (msg) => setMessages(m => [...m, msg])
+        const onCursor = ({ socketId, position, username, userId }) => {
+            setCursors(prev => ({
+                ...prev,
+                [socketId]: { position, username, userId }
+            }))
+        }
 
         socket.on("connect", onConnect)
         socket.on("disconnect", onDisconnect)
@@ -77,6 +89,7 @@ export const useDocumentEditor = (documentId) => {
         socket.on("document:user-joined", onUserJoined)
         socket.on("document:user-left", onUserLeft)
         socket.on("chat:message", onChat)
+        socket.on("document:cursor", onCursor)
 
         if (socket.connected) onConnect()
 
@@ -89,6 +102,7 @@ export const useDocumentEditor = (documentId) => {
             socket.off("document:user-joined", onUserJoined)
             socket.off("document:user-left", onUserLeft)
             socket.off("chat:message", onChat)
+            socket.off("document:cursor", onCursor)
             disconnectSocket()
         }
     }, [documentId, navigate])
@@ -102,13 +116,17 @@ export const useDocumentEditor = (documentId) => {
         socket.emit("chat:message", { documentId, text })
     }
 
+    const updateCursor = (position) => {
+        socket.emit("document:cursor", { documentId, position })
+    }
+
     const addCollaborator = async (email) => {
         const res = await documentService.addCollaborator(documentId, email)
         setDoc(res.data)
     }
 
     return {
-        doc, content, loading, err, connected, participants, messages,
-        updateContent, sendChat, addCollaborator
+        doc, content, loading, err, connected, participants, messages, cursors,
+        updateContent, sendChat, updateCursor, addCollaborator
     }
 }
