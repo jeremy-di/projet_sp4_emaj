@@ -101,7 +101,7 @@ const HomeFiles = () => {
                                         Type
                                     </th>
                                     <th className="px-6 py-4 text-right text-sm font-semibold text-slate-600">
-                                        Actions <span className='text-xs text-amber-600'>( Appuie long pour supprimer )</span>
+                                        Actions <span className='text-xs text-amber-600'>( Un Appui long pour supprimer )</span>
                                     </th>
                                 </tr>
                             </thead>
